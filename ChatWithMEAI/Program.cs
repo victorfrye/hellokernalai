@@ -1,17 +1,36 @@
 ﻿// Read settings
+using Microsoft.Extensions.DependencyInjection;
+
 WorkshopSettings settings = ConfigurationHelper.LoadWorkshopSettings(args);
+IAnsiConsole console = AnsiConsole.Console;
+
+ServiceCollection services = new();
+services.AddSingleton(settings);
+services.AddSingleton(console);
+
+// Register all IExample implementations using Scrutor
+services.Scan(scan => scan
+    .FromEntryAssembly()
+    .AddClasses(classes => classes.AssignableTo<IExample>())
+    .AsImplementedInterfaces()
+    .WithSingletonLifetime());
+
+ServiceProvider sp = services.BuildServiceProvider();
 
 // Welcome message using Spectre.Console
-IAnsiConsole console = AnsiConsole.Console;
 try
 {
     console.Write(new FigletText("MEAI Chat"));
     console.MarkupLine("[bold green]Chat examples using Microsoft.Extensions.AI[/]");
     console.WriteLine();
 
-    // Run the HelloWorld example
-    HelloWorld helloWorld = new(console, settings);
-    await helloWorld.RunAsync();
+    // Select an example to run
+    IExample selectedExample = console.Prompt(new SelectionPrompt<IExample>()
+        .Title("Select an example to run")
+        .AddChoices(sp.GetServices<IExample>())
+        .UseConverter(e => e.Name));
+
+    await selectedExample.RunAsync();
 }
 catch (Exception ex)
 {

@@ -1,0 +1,33 @@
+﻿using SharedLogic.Settings;
+using Spectre.Console;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SharedLogic.Helpers;
+
+public static class ConsoleHelpers
+{
+    public static string GetUserMessage(this IAnsiConsole console)
+    {
+        return console.Prompt(new TextPrompt<string>("[Yellow]User:[/] "));
+    }
+
+    public static void StartAiResponse(this IAnsiConsole console)
+    {
+        console.Markup("[Blue]AI: [/]");
+    }
+
+    public static void WriteUserMessage(this IAnsiConsole console, string message)
+    {
+        console.Markup("[Yellow]User: [/]");
+        console.WriteLine(message);
+    }
+
+    public static void WriteModelInfo(this IAnsiConsole console, ModelSettings settings, string interactionType = "chat")
+    {
+        console.MarkupLine($"[orange3]Using {settings.Provider} for {interactionType} with model: {settings.Model}[/]\r\n");
+    }
+}

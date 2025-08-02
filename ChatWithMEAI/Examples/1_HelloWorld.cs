@@ -1,21 +1,23 @@
-﻿namespace ChatWithMEAI;
+﻿namespace ChatWithMEAI.Examples;
 
-public class HelloWorld(IAnsiConsole console, WorkshopSettings settings)
+public class HelloWorld(IAnsiConsole console, WorkshopSettings settings) : IExample
 {
+    public string Name => "Hello World";
+
     public async Task RunAsync()
     {
         ModelSettings chatSettings = settings.Chat;
+        console.WriteModelInfo(chatSettings);
 
         // Create the appropriate chat client based on the provider specified in the settings
         IChatClient chatClient = ChatClientFactory.CreateChatClient(chatSettings);
 
-        // Get a message from the user
-        console.MarkupLine($"[orange3]Using {chatSettings.Provider} for chat with model: {chatSettings.Model}[/]");
-        console.WriteLine();
-        string message = AnsiConsole.Prompt(new TextPrompt<string>("[Yellow]User:[/] "));
+        // Use a hardcoded message for now
+        string message = "Hello from Beer City Code!";
+        console.WriteUserMessage(message);
 
         // Send the message to the chat client and get a response
-        console.Markup($"[blue]{chatSettings.Provider}: [/]");
+        console.StartAiResponse();
         ChatResponse result = await chatClient.GetResponseAsync(message);
 
         // Display the response in the console
