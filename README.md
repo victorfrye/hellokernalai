@@ -8,11 +8,19 @@ This workshop uses .NET 8 and assumes you are working with Visual Studio 2022 or
 
 Because this is an AI workshop, you will need access to a chat model with tool support and an embedding model.
 
-This code is pre-configured to work with either Ollama models running locally or Azure OpenAI.
+This code is pre-configured to work with the following services:
+
+- [Ollama](https://ollama.com)
+- [OpenAI](https://openai.com)
+- [Azure OpenAI](https://azure.microsoft.com/en-us/products/ai-services/openai-service/)
+
+Kernel Memory, Semantic Kernel, and Microsoft.Extensions.AI all support additional providers, so if you want to work with a different model provider, there's likely an option for it.
 
 ### Ollama Configuration
 
 TODO
+
+### OpenAI Configuration
 
 ### Azure OpenAI Configuration
 

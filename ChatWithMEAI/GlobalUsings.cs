@@ -1,0 +1,7 @@
+﻿global using Microsoft.Extensions.AI;
+global using OllamaSharp;
+global using OpenAI;
+global using SharedLogic;
+global using SharedLogic.Settings;
+global using Spectre.Console;
+global using System.ClientModel;
