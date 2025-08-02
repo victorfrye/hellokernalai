@@ -1,1 +1,13 @@
-<Solution />
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="LICENSE.txt" />
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="ChatWithMEAI/ChatWithMEAI.csproj" />
+  <Project Path="EvaluationAndTuning/EvaluationAndTuning.csproj" />
+  <Project Path="KernelMemory/KernelMemory.csproj" />
+  <Project Path="SemanticKernelChat/SemanticKernelChat.csproj" />
+  <Project Path="SemanticKernelPlugins/SemanticKernelPlugins.csproj" />
+  <Project Path="SemanticKernelRAG/SemanticKernelRAG.csproj" />
+  <Project Path="SharedLogic/SharedLogic.csproj" />
+</Solution>
