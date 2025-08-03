@@ -47,18 +47,29 @@
         return new OllamaApiClient(settings.Url ?? "http://localhost:11434", settings.Model);
     }
 
-    public static IKernelBuilder AddWorkshopChatCompletion(this IKernelBuilder builder, ModelSettings settings)
-    {
-        IChatClient chatClient = CreateChatClient(settings)
-            .AsBuilder()
-            .UseKernelFunctionInvocation()
-            .Build();
 
-        builder.Services.AddSingleton(chatClient);
 #pragma warning disable SKEXP0001 // AsChatCompletionService is experimental.
-        builder.Services.AddSingleton(chatClient.AsChatCompletionService());
-#pragma warning restore SKEXP0001
+    public static IKernelBuilder AddWorkshopChatCompletion(this IKernelBuilder builder, ModelSettings settings, bool allowFunctionCalls = false)
+    {
+        // Normally I wouldn't create an IChatClient, but we have existing logic for it in this app.
+        // Doing things this way allows for fewer places to update should we need to change how we create the chat client.
+        IChatClient chatClient = CreateChatClient(settings);
 
+        if (allowFunctionCalls)
+        {
+            // This wraps it into a KernelFunctionInvokingChatClient which automatically calls Kernel Functions
+            chatClient = chatClient.AsBuilder()
+                .UseKernelFunctionInvocation()
+                .Build();
+        }
+
+        // Now that we have the chat client, we can register it with the KernelBuilder for dependency injection
+        builder.Services.AddSingleton(chatClient);
+        builder.Services.AddSingleton(chatClient.AsChatCompletionService());
+
+        // Return the builder to allow for fluent call chaining
         return builder;
     }
+#pragma warning restore SKEXP0001
+
 }
