@@ -1,8 +1,9 @@
-﻿namespace ChatWithMEAI.ChatModule;
+﻿namespace Workshops.KernelAi.ConsoleApp.Modules.ChatModule;
 
 public class ObjectResult(IAnsiConsole console, WorkshopSettings settings) : IExample
 {
     public string Name => "Returning objects instead of strings";
+    public WorkshopModule Module => WorkshopModule.Chat;
 
     private class SupportTicket
     {

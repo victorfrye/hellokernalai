@@ -1,8 +1,9 @@
-﻿namespace ChatWithMEAI.ChatModule;
+﻿namespace Workshops.KernelAi.ConsoleApp.Modules.ChatModule;
 
 public class Module1Exercise(IAnsiConsole console, WorkshopSettings settings) : IExample
 {
     public string Name => "Module 1 Exercise";
+    public WorkshopModule Module => WorkshopModule.Chat;
 
     public async Task RunAsync()
     {

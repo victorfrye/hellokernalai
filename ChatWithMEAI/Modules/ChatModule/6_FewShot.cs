@@ -1,8 +1,9 @@
-﻿namespace ChatWithMEAI.ChatModule;
+﻿namespace Workshops.KernelAi.ConsoleApp.Modules.ChatModule;
 
-public class StreamingChat(IAnsiConsole console, WorkshopSettings settings) : IExample
+public class FewShot(IAnsiConsole console, WorkshopSettings settings) : IExample
 {
-    public string Name => "Chat with Streaming Responses";
+    public string Name => "Approval / Rejection Bot with Few Shot Examples";
+    public WorkshopModule Module => WorkshopModule.Chat;
 
     public async Task RunAsync()
     {
@@ -13,7 +14,18 @@ public class StreamingChat(IAnsiConsole console, WorkshopSettings settings) : IE
         IChatClient chatClient = ChatClientFactory.CreateChatClient(chatSettings);
 
         // The system prompt gives flavor and instructions to the AI agent
-        List<ChatMessage> history = [];
+        List<ChatMessage> history = [
+            new ChatMessage(ChatRole.System, """
+            You are an expense approval or rejection bot.
+            Your role is to indicate whether an expense request is valid based on the provided examples:
+            """),
+            new ChatMessage(ChatRole.User, "$50 for printer paper at Staples"),
+            new ChatMessage(ChatRole.Assistant, "Approved. Printer paper is necessary for printing."),
+            new ChatMessage(ChatRole.User, "$80 for a keg of Diet Doctor Pepper"),
+            new ChatMessage(ChatRole.Assistant, "Rejected. We don't have those kinds of parties here."),
+            new ChatMessage(ChatRole.User, "$1200 for bribing an official"),
+            new ChatMessage(ChatRole.Assistant, "Rejected. Bribery is illegal."),
+        ];
 
         // Get the first message from the user
         string message = console.GetUserMessage();

@@ -1,9 +1,9 @@
 ﻿global using Microsoft.Extensions.AI;
 global using OllamaSharp;
 global using OpenAI;
-global using SharedLogic;
-global using SharedLogic.Settings;
 global using Spectre.Console;
 global using System.ClientModel;
-global using SharedLogic.Helpers;
 global using Microsoft.Extensions.DependencyInjection;
+global using Workshops.KernelAi.ConsoleApp.Domain;
+global using Workshops.KernelAi.ConsoleApp.Helpers;
+global using Workshops.KernelAi.ConsoleApp.Settings;

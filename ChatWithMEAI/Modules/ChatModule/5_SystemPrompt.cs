@@ -1,8 +1,9 @@
-﻿namespace ChatWithMEAI.ChatModule;
+﻿namespace Workshops.KernelAi.ConsoleApp.Modules.ChatModule;
 
 public class SystemPrompt(IAnsiConsole console, WorkshopSettings settings) : IExample
 {
     public string Name => "Chat with System Prompt";
+    public WorkshopModule Module => WorkshopModule.Chat;
 
     public async Task RunAsync()
     {

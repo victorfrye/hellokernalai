@@ -1,8 +1,9 @@
-﻿namespace ChatWithMEAI.ChatModule;
+﻿namespace Workshops.KernelAi.ConsoleApp.Modules.ChatModule;
 
-public class FewShot(IAnsiConsole console, WorkshopSettings settings) : IExample
+public class ToolCalls(IAnsiConsole console, WorkshopSettings settings) : IExample
 {
-    public string Name => "Approval / Rejection Bot with Few Shot Examples";
+    public string Name => "Chat with Tool Calls";
+    public WorkshopModule Module => WorkshopModule.Chat;
 
     public async Task RunAsync()
     {
@@ -10,21 +11,17 @@ public class FewShot(IAnsiConsole console, WorkshopSettings settings) : IExample
         console.WriteModelInfo(chatSettings);
 
         // Create the appropriate chat client based on the provider specified in the settings
-        IChatClient chatClient = ChatClientFactory.CreateChatClient(chatSettings);
+        IChatClient chatClient = ChatClientFactory.CreateChatClient(chatSettings)
+            .AsBuilder()
+            .UseFunctionInvocation() // Normally this goes in the part where we create the client originally
+            .Build();
 
         // The system prompt gives flavor and instructions to the AI agent
         List<ChatMessage> history = [
             new ChatMessage(ChatRole.System, """
-            You are an expense approval or rejection bot.
-            Your role is to indicate whether an expense request is valid based on the provided examples:
-            """),
-            new ChatMessage(ChatRole.User, "$50 for printer paper at Staples"),
-            new ChatMessage(ChatRole.Assistant, "Approved. Printer paper is necessary for printing."),
-            new ChatMessage(ChatRole.User, "$80 for a keg of Diet Doctor Pepper"),
-            new ChatMessage(ChatRole.Assistant, "Rejected. We don't have those kinds of parties here."),
-            new ChatMessage(ChatRole.User, "$1200 for bribing an official"),
-            new ChatMessage(ChatRole.Assistant, "Rejected. Bribery is illegal."),
-        ];
+            You are a singing weatherman. 
+            Deliver concise weather updates in the form of a short song or rhyme.
+            """)];
 
         // Get the first message from the user
         string message = console.GetUserMessage();
@@ -33,10 +30,18 @@ public class FewShot(IAnsiConsole console, WorkshopSettings settings) : IExample
         {
             history.Add(new ChatMessage(ChatRole.User, message));
 
+            // I like to create a new ChatOptions object for each request due to some bugs I've seen over the years
+            ChatOptions chatOptions = new()
+            {
+                ToolMode = ChatToolMode.Auto,
+                AllowMultipleToolCalls = true,
+                Tools = [AIFunctionFactory.Create(GetCurrentWeatherConditions)]
+            };
+
             // Send the message to the chat client and get a response
             console.StartAiResponse();
             List<ChatResponseUpdate> updates = [];
-            await foreach (var update in chatClient.GetStreamingResponseAsync(history))
+            await foreach (var update in chatClient.GetStreamingResponseAsync(history, chatOptions))
             {
                 console.Write(update.Text);
                 updates.Add(update);
@@ -52,5 +57,12 @@ public class FewShot(IAnsiConsole console, WorkshopSettings settings) : IExample
             // Get the next message from the user
             message = console.GetUserMessage();
         }
+    }
+
+    private string GetCurrentWeatherConditions()
+    {
+        console.DisplayToolCall();
+
+        return "Volcanic Ash"; // You'd usually actually call a weather API here
     }
 }

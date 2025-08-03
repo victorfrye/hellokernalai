@@ -36,8 +36,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\SharedLogic\SharedLogic.csproj" />
-  </ItemGroup>
-
 </Project>
