@@ -2,6 +2,10 @@
 global using Microsoft.Extensions.AI.Evaluation;
 global using Microsoft.Extensions.AI.Evaluation.Quality;
 global using Microsoft.Extensions.AI.Evaluation.Reporting;
+global using Microsoft.Extensions.AI.Evaluation.Reporting.Formats.Html;
+global using Microsoft.Extensions.AI.Evaluation.Reporting.Formats.Json;
+global using Microsoft.Extensions.AI.Evaluation.Reporting.Storage;
+global using System.Diagnostics;
 global using OllamaSharp;
 global using OpenAI;
 global using Spectre.Console;
