@@ -46,4 +46,15 @@
     {
         return new OllamaApiClient(settings.Url ?? "http://localhost:11434", settings.Model);
     }
+
+    public static IKernelBuilder AddWorkshopChatCompletion(this IKernelBuilder builder, ModelSettings settings)
+    {
+        IChatClient chatClient = CreateChatClient(settings);
+        builder.Services.AddSingleton(chatClient);
+#pragma warning disable SKEXP0001 // AsChatCompletionService is experimental.
+        builder.Services.AddSingleton(chatClient.AsChatCompletionService());
+#pragma warning restore SKEXP0001
+
+        return builder;
+    }
 }

@@ -32,6 +32,10 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.7" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.7" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.7" />
+    <PackageReference Include="Microsoft.SemanticKernel" Version="1.61.0" />
+    <PackageReference Include="Microsoft.SemanticKernel.Connectors.AzureOpenAI" Version="1.61.0" />
+    <PackageReference Include="Microsoft.SemanticKernel.Connectors.Ollama" Version="1.61.0-alpha" />
+    <PackageReference Include="Microsoft.SemanticKernel.Connectors.OpenAI" Version="1.61.0" />
     <PackageReference Include="OllamaSharp" Version="5.2.3" />
     <PackageReference Include="Scrutor" Version="6.1.0" />
     <PackageReference Include="Spectre.Console" Version="0.50.0" />
