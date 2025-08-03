@@ -44,8 +44,8 @@ public static class ConsoleHelpers
 
     public static void DisplayEvaluationResultsTable(this IAnsiConsole console, EvaluationResult evalResult)
     {
-        Table table = new Table().Title("Evaluation Results");
-        table.AddColumns("Metric", "Value", "Reason");
+        Table table = new Table().Title("[blue]Evaluation Results[/]");
+        table.AddColumns("[orange3]Metric[/]", "[orange3]Value[/]", "[orange3]Reason[/]");
         foreach (var kvp in evalResult.Metrics)
         {
             EvaluationMetric metric = kvp.Value;
@@ -64,7 +64,21 @@ public static class ConsoleHelpers
                 }
             }
 
-            table.AddRow(kvp.Key, value, reason);
+            if (metric.Interpretation is not null)
+            {
+                reason = metric.Interpretation.Reason ?? reason;
+                if (metric.Interpretation.Failed)
+                {
+                    value = $"[red]{value}[/]";
+                    reason += $"\r\n[red]{metric.Interpretation.Reason}[/]";
+                }
+                else
+                {
+                    value = $"[green]{value}[/]";
+                }
+            }
+
+            table.AddRow(metric.Name, value, reason);
         }
 
         console.Write(table);
