@@ -3,5 +3,5 @@
     <File Path="LICENSE.txt" />
     <File Path="README.md" />
   </Folder>
-  <Project Path="ChatWithMEAI/Workshops.KernelAi.ConsoleApp.csproj" />
+  <Project Path="Workshops.KernelAi.ConsoleApp/Workshops.KernelAi.ConsoleApp.csproj" />
 </Solution>
