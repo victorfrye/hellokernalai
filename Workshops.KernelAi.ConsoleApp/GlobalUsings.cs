@@ -1,8 +1,12 @@
 ﻿global using Microsoft.Extensions.AI;
+global using Microsoft.Extensions.AI.Evaluation;
+global using Microsoft.Extensions.AI.Evaluation.Quality;
+global using Microsoft.Extensions.AI.Evaluation.Reporting;
 global using OllamaSharp;
 global using OpenAI;
 global using Spectre.Console;
 global using System.ClientModel;
+global using System.Text;
 global using Microsoft.Extensions.DependencyInjection;
 global using Workshops.KernelAi.ConsoleApp.Domain;
 global using Workshops.KernelAi.ConsoleApp.Helpers;
