@@ -1,12 +1,11 @@
 ﻿namespace Workshops.KernelAi.ConsoleApp.Modules.EvaluationModule;
 
-public class CompositeEvaluation(IAnsiConsole console, WorkshopSettings settings) : IExample
+public class ContextualEvaluators(IAnsiConsole console, WorkshopSettings settings) : IExample
 {
-    public string Name => "Composite Evaluation";
+    public string Name => "Contextual Evaluators";
 
     public WorkshopModule Module => WorkshopModule.Evaluation;
 
-#pragma warning disable AIEVAL001 // RelevanceTruthAndCompletenessEvaluator is still in preview
     public async Task RunAsync()
     {
         // Create the appropriate evaluation client based on the provider specified in the settings
@@ -20,7 +19,8 @@ public class CompositeEvaluation(IAnsiConsole console, WorkshopSettings settings
         IChatClient chatClient = ChatClientFactory.CreateChatClient(chatSettings);
 
         // Carry out the conversation using streaming responses
-        string userInput = console.GetUserMessage();
+        string userInput = "What is the answer to the ultimate question of life, the universe, and everything?";
+        console.MarkupLine($"[yellow]User:[/] {userInput}");
         console.StartAiResponse();
         StringBuilder sb = new();
         await foreach (var update in chatClient.GetStreamingResponseAsync(userInput))
@@ -35,14 +35,18 @@ public class CompositeEvaluation(IAnsiConsole console, WorkshopSettings settings
         console.MarkupLine("[blue]Evaluating...[/]");
         ChatConfiguration chatConfig = new(evalClient);
         IEvaluator evaluator = new CompositeEvaluator(
-            new RelevanceTruthAndCompletenessEvaluator(), 
-            new FluencyEvaluator(), 
-            new CoherenceEvaluator(),
-            new RelevanceEvaluator()
+            new CompletenessEvaluator(),
+            new EquivalenceEvaluator(),
+            new GroundednessEvaluator()
         );
-        EvaluationResult result = await evaluator.EvaluateAsync(userInput, reply, chatConfig);
+
+        List<EvaluationContext> context = [
+            new CompletenessEvaluatorContext("The answer should address life, the universe, and everything in existence"),
+            new EquivalenceEvaluatorContext("The answer should be equivalent to '42'"),
+            new GroundednessEvaluatorContext("The answer should be based on the book 'The Hitchhiker's Guide to the Galaxy' by Douglas Adams")
+        ];
+        EvaluationResult result = await evaluator.EvaluateAsync(userInput, reply, chatConfig, context);
 
         console.DisplayEvaluationResultsTable(result);
     }
-#pragma warning restore AIEVAL001
 }

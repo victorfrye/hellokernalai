@@ -70,7 +70,7 @@ public static class ConsoleHelpers
                 if (metric.Interpretation.Failed)
                 {
                     value = $"[red]{value}[/]";
-                    reason += $"\r\n[red]{metric.Interpretation.Reason}[/]";
+                    reason = $"[red]{reason}[/]";
                 }
                 else
                 {
