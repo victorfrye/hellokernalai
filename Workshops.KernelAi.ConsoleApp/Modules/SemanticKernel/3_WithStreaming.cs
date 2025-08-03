@@ -1,6 +1,5 @@
 ﻿namespace Workshops.KernelAi.ConsoleApp.Modules.SemanticKernel;
 
-#pragma warning disable SKEXP0001 // AsChatCompletionService is experimental
 public class WithStreaming(IAnsiConsole console, WorkshopSettings settings) : IExample
 {
     public string Name => "Chat with Streaming";
@@ -24,6 +23,8 @@ public class WithStreaming(IAnsiConsole console, WorkshopSettings settings) : IE
 
         IChatCompletionService chat = kernel.GetRequiredService<IChatCompletionService>();
         string userInput = console.GetUserMessage();
+
+        // Loop until the user enters "exit" or an empty message
         while (!string.IsNullOrWhiteSpace(userInput) && userInput != "exit")
         {
             history.AddUserMessage(userInput);
@@ -32,7 +33,7 @@ public class WithStreaming(IAnsiConsole console, WorkshopSettings settings) : IE
             StringBuilder sb = new();
             await foreach (StreamingChatMessageContent update in chat.GetStreamingChatMessageContentsAsync(history, kernel: kernel))
             {
-                console.Write(update.Content!);
+                console.Write(update.Content ?? "");
                 sb.Append(update.Content);
             }
             console.EndAiResponse();
@@ -43,4 +44,3 @@ public class WithStreaming(IAnsiConsole console, WorkshopSettings settings) : IE
         }
     }
 }
-#pragma warning restore SKEXP0001
