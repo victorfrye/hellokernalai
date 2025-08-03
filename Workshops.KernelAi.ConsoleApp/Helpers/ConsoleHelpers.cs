@@ -31,6 +31,12 @@ public static class ConsoleHelpers
         console.MarkupLine($"[orange3]Calling tool: {toolName}...[/]");
     }
 
+    public static void DisplayToolCall(this IAnsiConsole console, string? toolName, string? arguments)
+    {
+        console.MarkupLine($"[orange3]Calling tool: {toolName ?? "Unnamed"}{arguments ?? ""}[/]");
+    }
+
+
     public static void WriteUserMessage(this IAnsiConsole console, string message)
     {
         console.Markup("[Yellow]User: [/]");

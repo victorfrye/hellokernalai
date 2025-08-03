@@ -1,6 +1,6 @@
 ﻿namespace Workshops.KernelAi.ConsoleApp.Modules.SemanticKernel;
 
-public class KernelFunctions(IAnsiConsole console, WorkshopSettings settings) : IExample
+public class KernelFunctionChat(IAnsiConsole console, WorkshopSettings settings) : IExample
 {
     public string Name => "Kernel Functions";
 
@@ -15,30 +15,24 @@ public class KernelFunctions(IAnsiConsole console, WorkshopSettings settings) : 
             .AddWorkshopChatCompletion(chatSettings)
             .Build();
 
-        KernelPlugin plugin = kernel.Plugins.AddFromFunctions("Preferences", "Used to get the user's preferences",
+        kernel.Plugins.AddFromFunctions("Preferences", "Used to get the user's preferences",
             [
                 KernelFunctionFactory.CreateFromMethod(
                     functionName: "GetFavoriteColor",
-                    method: () => {
-                        console.DisplayToolCall("GetFavoriteColor");
-                        return "Dark Clear";
-                    }, 
+                    method: () => "Dark Clear", 
                     description: "Gets the user's favorite color"),
                 KernelFunctionFactory.CreateFromMethod(
                     functionName: "GetFavoriteAnimal",
-                    method: () => {
-                        console.DisplayToolCall("GetFavoriteAnimal");
-                        return "Puppies";
-                    },
+                    method: () => "Puppies",
                     description: "Gets the user's favorite animal"),
             ]);
 
         ChatHistory history = [];
         history.AddSystemMessage("""
-            You are a helpful assistant that can answer questions. 
+            You are a helpful assistant that can answer questions and provide commentary.
             Try to work the user's favorite things into your responses.
-            Keep your responses short and to the point.
-            Call the functions GetFavoriteColor and GetFavoriteAnimal to get the user's preferences.
+            Keep your responses to a sentence or two, and always include a touch of humor.
+            Call functions as needed.
             """);
 
         IChatCompletionService chat = kernel.GetRequiredService<IChatCompletionService>();
@@ -59,6 +53,13 @@ public class KernelFunctions(IAnsiConsole console, WorkshopSettings settings) : 
             await foreach (var update in chat.GetStreamingChatMessageContentsAsync(history, execSettings, kernel))
             {
                 console.Write(update.Content ?? "");
+                foreach (var item in update.Items)
+                {
+                    if (item is StreamingFunctionCallUpdateContent func)
+                    {
+                        console.DisplayToolCall(func.Name, func.Arguments);
+                    }
+                }
                 sb.Append(update.Content);
             }
             console.EndAiResponse();
