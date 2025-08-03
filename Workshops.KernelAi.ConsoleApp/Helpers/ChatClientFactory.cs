@@ -49,7 +49,11 @@
 
     public static IKernelBuilder AddWorkshopChatCompletion(this IKernelBuilder builder, ModelSettings settings)
     {
-        IChatClient chatClient = CreateChatClient(settings);
+        IChatClient chatClient = CreateChatClient(settings)
+            .AsBuilder()
+            .UseKernelFunctionInvocation()
+            .Build();
+
         builder.Services.AddSingleton(chatClient);
 #pragma warning disable SKEXP0001 // AsChatCompletionService is experimental.
         builder.Services.AddSingleton(chatClient.AsChatCompletionService());
