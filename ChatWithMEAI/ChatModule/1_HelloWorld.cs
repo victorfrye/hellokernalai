@@ -1,4 +1,4 @@
-﻿namespace ChatWithMEAI.Examples;
+﻿namespace ChatWithMEAI.ChatModule;
 
 public class HelloWorld(IAnsiConsole console, WorkshopSettings settings) : IExample
 {
@@ -21,6 +21,6 @@ public class HelloWorld(IAnsiConsole console, WorkshopSettings settings) : IExam
         ChatResponse result = await chatClient.GetResponseAsync(message);
 
         // Display the response in the console
-        console.WriteLine(result.Text);
+        console.EndAiResponse(result.Text);
     }
 }

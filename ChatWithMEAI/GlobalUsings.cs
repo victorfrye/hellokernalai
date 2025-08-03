@@ -5,6 +5,5 @@ global using SharedLogic;
 global using SharedLogic.Settings;
 global using Spectre.Console;
 global using System.ClientModel;
-global using ChatWithMEAI;
-global using ChatWithMEAI.Examples;
 global using SharedLogic.Helpers;
+global using Microsoft.Extensions.DependencyInjection;

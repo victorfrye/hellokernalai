@@ -3,6 +3,7 @@ using Spectre.Console;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,6 +19,23 @@ public static class ConsoleHelpers
     public static void StartAiResponse(this IAnsiConsole console)
     {
         console.Markup("[Blue]AI: [/]");
+    }
+
+    public static void EndAiResponse(this IAnsiConsole console, string? message = null)
+    {
+        if (string.IsNullOrWhiteSpace(message))
+        {
+            console.WriteLine();
+        }
+        else
+        {
+            console.WriteLine(message);
+        }
+    }
+
+    public static void DisplayToolCall(this IAnsiConsole console, [CallerMemberName] string toolName = "")
+    {
+        console.MarkupLine($"[orange3]Calling tool: {toolName}...[/]");
     }
 
     public static void WriteUserMessage(this IAnsiConsole console, string message)

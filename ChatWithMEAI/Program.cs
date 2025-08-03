@@ -1,6 +1,4 @@
 ﻿// Read settings
-using Microsoft.Extensions.DependencyInjection;
-
 WorkshopSettings settings = ConfigurationHelper.LoadWorkshopSettings(args);
 IAnsiConsole console = AnsiConsole.Console;
 
@@ -30,6 +28,7 @@ try
         .AddChoices(sp.GetServices<IExample>())
         .UseConverter(e => e.Name));
 
+    console.MarkupLine($"Starting [yellow]{selectedExample.Name}[/]");
     await selectedExample.RunAsync();
 }
 catch (Exception ex)

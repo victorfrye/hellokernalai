@@ -1,8 +1,8 @@
-﻿namespace ChatWithMEAI.Examples;
+﻿namespace ChatWithMEAI.ChatModule;
 
-public class ChatWithHistory(IAnsiConsole console, WorkshopSettings settings) : IExample
+public class Chat(IAnsiConsole console, WorkshopSettings settings) : IExample
 {
-    public string Name => "Chat with History";
+    public string Name => "Chat Loop";
 
     public async Task RunAsync()
     {
@@ -12,24 +12,17 @@ public class ChatWithHistory(IAnsiConsole console, WorkshopSettings settings) : 
         // Create the appropriate chat client based on the provider specified in the settings
         IChatClient chatClient = ChatClientFactory.CreateChatClient(chatSettings);
 
-        List<ChatMessage> history = [];
-
         // Get the first message from the user
         string message = console.GetUserMessage();
 
         while (!string.IsNullOrWhiteSpace(message) && !message.Equals("exit", StringComparison.OrdinalIgnoreCase))
         {
-            history.Add(new ChatMessage(ChatRole.User, message));
-
             // Send the message to the chat client and get a response
             console.StartAiResponse();
-            ChatResponse result = await chatClient.GetResponseAsync(history);
-
-            // Add the AI message to the history
-            history.Add(new ChatMessage(ChatRole.Assistant, message));
+            ChatResponse result = await chatClient.GetResponseAsync(message);
 
             // Display the response in the console
-            console.WriteLine(result.Text);
+            console.EndAiResponse(result.Text);
 
             // Get the next message from the user
             message = console.GetUserMessage();
