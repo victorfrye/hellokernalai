@@ -6,13 +6,17 @@ global using Microsoft.Extensions.AI.Evaluation.Reporting.Formats.Html;
 global using Microsoft.Extensions.AI.Evaluation.Reporting.Storage;
 global using Microsoft.SemanticKernel;
 global using Microsoft.SemanticKernel.ChatCompletion;
+global using Microsoft.KernelMemory;
 global using System.Diagnostics;
+global using System.Text;
 global using OllamaSharp;
 global using OpenAI;
 global using Spectre.Console;
+global using Spectre.Console.Json;
 global using System.ClientModel;
-global using System.Text;
+global using System.Numerics.Tensors;
 global using Microsoft.Extensions.DependencyInjection;
 global using Workshops.KernelAi.ConsoleApp.Domain;
 global using Workshops.KernelAi.ConsoleApp.Helpers;
 global using Workshops.KernelAi.ConsoleApp.Settings;
+

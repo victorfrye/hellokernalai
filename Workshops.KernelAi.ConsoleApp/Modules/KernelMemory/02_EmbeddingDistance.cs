@@ -1,6 +1,4 @@
-﻿using System.Numerics.Tensors;
-
-namespace Workshops.KernelAi.ConsoleApp.Modules.KernelMemory;
+﻿namespace Workshops.KernelAi.ConsoleApp.Modules.KernelMemory;
 
 public class EmbeddingDistance(IAnsiConsole console, WorkshopSettings settings) : IExample
 {
