@@ -1,8 +1,8 @@
 ﻿namespace Workshops.KernelAi.ConsoleApp.Modules.SemanticKernel;
 
-public class HelloSemanticKernel(IAnsiConsole console, WorkshopSettings settings) : IExample
+public class KernelPrompt(IAnsiConsole console, WorkshopSettings settings) : IExample
 {
-    public string Name => "Hello Semantic Kernel";
+    public string Name => "Semantic Kernel Haiku";
 
     public WorkshopModule Module => WorkshopModule.SemanticKernel;
 
@@ -37,12 +37,12 @@ public class HelloSemanticKernel(IAnsiConsole console, WorkshopSettings settings
         }
 
         Kernel kernel = builder.Build();
-        IChatCompletionService chat = kernel.GetRequiredService<IChatCompletionService>();
 
-        string userInput = console.GetUserMessage();
+        string userMessage = "Compose a short haiku about Semantic Kernel";
+        console.MarkupLine($"[yellow]User:[/] {userMessage}");
 
         console.StartAiResponse();
-        ChatMessageContent response = await chat.GetChatMessageContentAsync(userInput, kernel: kernel);
-        console.EndAiResponse(response.Content);
+        FunctionResult result = await kernel.InvokePromptAsync(userMessage);
+        console.EndAiResponse(result.ToString());
     }
 }

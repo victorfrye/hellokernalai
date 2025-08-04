@@ -12,7 +12,7 @@ public class KernelFunctionChat(IAnsiConsole console, WorkshopSettings settings)
         console.WriteModelInfo(chatSettings);
 
         Kernel kernel = Kernel.CreateBuilder()
-            .AddWorkshopChatCompletion(chatSettings)
+            .AddWorkshopChatCompletion(chatSettings, allowFunctionCalls: true)
             .Build();
 
         kernel.Plugins.AddFromFunctions("Preferences", "Used to get the user's preferences",

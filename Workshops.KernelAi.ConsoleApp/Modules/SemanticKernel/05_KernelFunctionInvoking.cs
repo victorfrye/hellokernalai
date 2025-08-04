@@ -24,8 +24,11 @@ public class KernelFunctionInvoke(IAnsiConsole console, WorkshopSettings setting
                     },
                     description: "Gets the user's favorite color");
 
+        FunctionResult funcResult = await func.InvokeAsync(kernel);
+        console.WriteLine($"Direct Function Result: {funcResult}");
+
         string? directResult = await func.InvokeAsync<string>(kernel);
-        console.WriteLine($"Direct Function Result: {directResult}");
+        console.WriteLine($"Typed Function Result: {directResult}");
 
         FunctionResult result = await kernel.InvokeAsync(func);
         console.WriteLine($"Kernel Function Result: {result.GetValue<string>()}");

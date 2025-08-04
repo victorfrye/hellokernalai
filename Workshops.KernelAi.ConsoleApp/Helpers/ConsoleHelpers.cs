@@ -36,6 +36,18 @@ public static class ConsoleHelpers
         console.MarkupLine($"[orange3]Calling tool: {toolName ?? "Unnamed"}{arguments ?? ""}[/]");
     }
 
+    public static void DisplayToolCall(this IAnsiConsole console, string? toolName, KernelArguments? arguments)
+    {
+        if (arguments is null)
+        {
+            DisplayToolCall(console, toolName, "");
+        } 
+        else
+        {
+            string argsString = string.Join(", ", arguments.Select(kvp => $"{kvp.Key}: {kvp.Value}"));
+            DisplayToolCall(console, toolName, $"{{{argsString}}}");
+        }
+    }
 
     public static void WriteUserMessage(this IAnsiConsole console, string message)
     {
