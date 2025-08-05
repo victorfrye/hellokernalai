@@ -1,4 +1,6 @@
-﻿public static class ChatClientFactory
+﻿using Azure.AI.OpenAI;
+
+public static class ChatClientFactory
 {
     public static IChatClient CreateChatClient(ModelSettings settings)
     {
@@ -24,12 +26,7 @@
         string key = settings.Key ?? throw new ArgumentException("Key is required for Azure OpenAI", nameof(settings));
 
         ApiKeyCredential credential = new(key);
-        OpenAIClientOptions options = new()
-        {
-            Endpoint = new Uri(url)
-        };
-
-        return new OpenAIClient(credential, options);
+        return new AzureOpenAIClient(new Uri(url), credential);
     }
 
     private static IChatClient CreateOpenAiChatClient(ModelSettings settings)
@@ -113,6 +110,7 @@
             case AiProvider.AzureOpenAI:
                 AzureOpenAIConfig aoaiConfig = new()
                 {
+                    Auth = AzureOpenAIConfig.AuthTypes.APIKey,
                     APIKey = embeddingSettings.Key ?? throw new InvalidOperationException("Azure OpenAI Embedding Key is required"),
                     Endpoint = embeddingSettings.Url ?? throw new InvalidOperationException("Azure OpenAI Embedding URL is required"),
                     Deployment = embeddingSettings.Model ?? throw new InvalidOperationException("Azure OpenAI Embedding Model (Deployment) is required")
