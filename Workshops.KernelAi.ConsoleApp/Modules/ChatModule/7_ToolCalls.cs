@@ -2,7 +2,7 @@
 
 public class ToolCalls(IAnsiConsole console, WorkshopSettings settings) : IExample
 {
-    public string Name => "Chat with Tool Calls";
+    public string Name => "Chat with Tool Calls (Weather)";
     public WorkshopModule Module => WorkshopModule.Chat;
 
     public async Task RunAsync()
