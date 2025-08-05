@@ -9,18 +9,21 @@ public class Plugins(IAnsiConsole console, WorkshopSettings settings) : IExample
     public class DicePlugin
     {
         [KernelFunction]
+        [Description("Roll a 20-sided die and return the result. Perfect for determining outcomes in dramatic situations.")]
         public string RollD20()
         {
             return RollDice(20);
         }
 
         [KernelFunction]
+        [Description("Roll a 6-sided die and return the result. Great for simple random events and decisions.")]
         public string RollD6()
         {
             return RollDice(6);
         }
 
         [KernelFunction]
+        [Description("Roll a die with the specified number of sides and return the result. Use this for any random number generation between 1 and the sides value.")]
         public string RollDice(int sides = 6)
         {
             Random random = Random.Shared;

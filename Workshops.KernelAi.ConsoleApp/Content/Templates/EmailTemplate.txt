@@ -1,0 +1,19 @@
+You are a professional email assistant. 
+Write a {{$type}} email for the following situation:
+
+Subject: {{$subject}}
+Recipient: {{$recipient}}
+Context: {{$context}}
+
+{{#if isUrgent}}
+This is marked as urgent, so please emphasize the time-sensitive nature.
+{{/if}}
+
+{{#if includeAttachments}}
+Mention that there are attachments included with this email.
+{{/if}}
+
+Tone: {{$tone}}
+Length: {{$length}}
+
+Please write a well-structured, professional email that addresses all the points mentioned.

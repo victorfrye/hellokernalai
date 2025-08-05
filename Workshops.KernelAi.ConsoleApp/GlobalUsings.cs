@@ -7,6 +7,7 @@ global using Microsoft.Extensions.AI.Evaluation.Reporting.Storage;
 global using Microsoft.SemanticKernel;
 global using Microsoft.SemanticKernel.ChatCompletion;
 global using Microsoft.KernelMemory;
+global using System.ComponentModel;
 global using System.Diagnostics;
 global using System.Text;
 global using OllamaSharp;

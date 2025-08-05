@@ -1,0 +1,26 @@
+You are a marketing content specialist.
+Create engaging marketing copy for:
+
+Product/Service: {{$productName}}
+Industry: {{$industry}}
+Target audience: {{$targetAudience}}
+
+Key features:
+{{#each features}}
+- {{this}}
+{{/each}}
+
+Benefits:
+{{#each benefits}}
+- {{this}}
+{{/each}}
+
+{{#if hasDiscount}}
+Current promotion: {{$discountDetails}}
+{{/if}}
+
+Content type: {{$contentType}}
+Tone: {{$tone}}
+Call to action: {{$callToAction}}
+
+Create compelling marketing content that highlights the value proposition and motivates the target audience to take action.

@@ -38,6 +38,7 @@ public class FakeBank(IAnsiConsole console, WorkshopSettings settings) : IExampl
     {
 
         [KernelFunction]
+        [Description("Get the current balance of the authenticated user's bank account. Returns the exact balance amount.")]
         public async Task<string> GetBalance()
         {
             // Simulate a delay to mimic an external API call
@@ -47,6 +48,7 @@ public class FakeBank(IAnsiConsole console, WorkshopSettings settings) : IExampl
         }
 
         [KernelFunction]
+        [Description("Get complete account details for the authenticated user, including username and current balance.")]
         public async Task<BankAccount> GetAccountDetails()
         {
             // Simulate a delay to mimic an external API call
@@ -56,6 +58,7 @@ public class FakeBank(IAnsiConsole console, WorkshopSettings settings) : IExampl
         }
 
         [KernelFunction]
+        [Description("Deposit money into the authenticated user's bank account. Amount must be positive. Returns confirmation and new balance.")]
         public async Task<string> Deposit(decimal amount)
         {
             try
@@ -74,6 +77,7 @@ public class FakeBank(IAnsiConsole console, WorkshopSettings settings) : IExampl
         }
 
         [KernelFunction]
+        [Description("Withdraw money from the authenticated user's bank account. Amount must be positive and not exceed current balance. Returns confirmation and new balance.")]
         public async Task<string> Withdrawal(decimal amount)
         {
             try
