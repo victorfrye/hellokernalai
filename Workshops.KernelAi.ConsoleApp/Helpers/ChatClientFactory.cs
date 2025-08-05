@@ -106,4 +106,73 @@
     }
 #pragma warning restore SKEXP0001
 
+    public static IKernelMemoryBuilder WithWorkshopTextEmbeddingGeneration(this IKernelMemoryBuilder builder, ModelSettings embeddingSettings)
+    {
+        switch (embeddingSettings.Provider)
+        {
+            case AiProvider.AzureOpenAI:
+                AzureOpenAIConfig aoaiConfig = new()
+                {
+                    APIKey = embeddingSettings.Key ?? throw new InvalidOperationException("Azure OpenAI Embedding Key is required"),
+                    Endpoint = embeddingSettings.Url ?? throw new InvalidOperationException("Azure OpenAI Embedding URL is required"),
+                    Deployment = embeddingSettings.Model ?? throw new InvalidOperationException("Azure OpenAI Embedding Model (Deployment) is required")
+                };
+                builder.WithAzureOpenAITextEmbeddingGeneration(aoaiConfig);
+                break;
+            case AiProvider.OpenAI:
+                OpenAIConfig openAIConfig = new()
+                {
+                    APIKey = embeddingSettings.Key ?? throw new InvalidOperationException("OpenAI Embedding Key is required"),
+                    EmbeddingModel = embeddingSettings.Model ?? throw new InvalidOperationException("OpenAI Embedding Model is required")
+                };
+                if (embeddingSettings.Url is not null)
+                {
+                    openAIConfig.Endpoint = embeddingSettings.Url;
+                }
+                builder.WithOpenAITextEmbeddingGeneration(openAIConfig);
+                break;
+            case AiProvider.Ollama:
+                builder.WithOllamaTextEmbeddingGeneration(embeddingSettings.Model, embeddingSettings.Url ?? "http://localhost:11434");
+                break;
+            default:
+                throw new NotSupportedException($"Embedding provider {embeddingSettings.Provider} is not supported.");
+        }
+
+        return builder;
+    }
+
+    public static IKernelMemoryBuilder WithWorkshopTextGenerator(this IKernelMemoryBuilder builder, ModelSettings chatSettings)
+    {
+        switch (chatSettings.Provider)
+        {
+            case AiProvider.AzureOpenAI:
+                AzureOpenAIConfig aoaiConfig = new()
+                {
+                    APIKey = chatSettings.Key ?? throw new InvalidOperationException("Azure OpenAI Chat Key is required"),
+                    Endpoint = chatSettings.Url ?? throw new InvalidOperationException("Azure OpenAI Chat URL is required"),
+                    Deployment = chatSettings.Model ?? throw new InvalidOperationException("Azure OpenAI Chat Model (Deployment) is required")
+                };
+                builder.WithAzureOpenAITextGeneration(aoaiConfig);
+                break;
+            case AiProvider.OpenAI:
+                OpenAIConfig openAIConfig = new()
+                {
+                    APIKey = chatSettings.Key ?? throw new InvalidOperationException("OpenAI Chat Key is required"),
+                    EmbeddingModel = chatSettings.Model ?? throw new InvalidOperationException("OpenAI Chat Model is required")
+                };
+                if (chatSettings.Url is not null)
+                {
+                    openAIConfig.Endpoint = chatSettings.Url;
+                }
+                builder.WithOpenAITextGeneration(openAIConfig);
+                break;
+            case AiProvider.Ollama:
+                builder.WithOllamaTextGeneration(chatSettings.Model, chatSettings.Url ?? "http://localhost:11434");
+                break;
+            default:
+                throw new NotSupportedException($"Chat provider {chatSettings.Provider} is not supported.");
+        }
+
+        return builder;
+    }
 }

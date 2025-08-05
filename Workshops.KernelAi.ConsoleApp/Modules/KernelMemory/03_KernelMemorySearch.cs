@@ -1,4 +1,6 @@
-﻿namespace Workshops.KernelAi.ConsoleApp.Modules.KernelMemory;
+﻿using System.Text.Json;
+
+namespace Workshops.KernelAi.ConsoleApp.Modules.KernelMemory;
 
 public class KernelMemorySearchText(IAnsiConsole console, WorkshopSettings settings) : IExample
 {
@@ -11,26 +13,10 @@ public class KernelMemorySearchText(IAnsiConsole console, WorkshopSettings setti
         ModelSettings embeddingSettings = settings.Embedding;
         console.WriteModelInfo(embeddingSettings, "Embedding");
 
-        KernelMemoryBuilder builder = new();
-        builder.WithoutTextGenerator(); // Disable text generation for this example
-
-        IEmbeddingGenerator embedding = ChatClientFactory.CreateEmbeddingGenerator(embeddingSettings);
-        switch (embeddingSettings.Provider)
-        {
-            case AiProvider.AzureOpenAI:
-                throw new NotImplementedException("Azure OpenAI embedding is not implemented in this example. Please use Ollama.");
-                break;
-            case AiProvider.OpenAI:
-                throw new NotImplementedException("OpenAI embedding is not implemented in this example. Please use Ollama.");
-                break;
-            case AiProvider.Ollama:
-                builder.WithOllamaTextEmbeddingGeneration(embeddingSettings.Model, embeddingSettings.Url ?? "http://localhost:11434");
-                break;
-            default:
-                throw new NotSupportedException($"Embedding provider {embeddingSettings.Provider} is not supported.");
-        }
-
-        IKernelMemory kernelMemory = builder.Build();
+        IKernelMemory kernelMemory = new KernelMemoryBuilder()
+            .WithWorkshopTextEmbeddingGeneration(embeddingSettings)
+            .WithoutTextGenerator()
+            .Build();
 
         console.MarkupLine("[yellow]Adding text to Kernel Memory...[/]");
         await kernelMemory.ImportTextAsync("""
@@ -73,7 +59,6 @@ public class KernelMemorySearchText(IAnsiConsole console, WorkshopSettings setti
             Microsoft MVP in AI and .NET.
             """);
 
-
         await kernelMemory.ImportTextAsync("""
             Victor Frye is a developer who thrives at the intersection of technical problem-solving and creative 
             innovation. As a Senior Software Engineer and DevOps specialist at Leading EDJE, he specializes in 
@@ -87,7 +72,6 @@ public class KernelMemorySearchText(IAnsiConsole console, WorkshopSettings setti
             """);
 
         console.MarkupLine("[green]Text added to Kernel Memory.[/]");
-
         string searchText = console.GetUserMessage();
 
         console.StartAiResponse();

@@ -6,5 +6,5 @@ public enum WorkshopModule
     Evaluation,
     SemanticKernel,
     KernelMemory,
-    AdvancedSemanticKernel
+    FinalProject
 }

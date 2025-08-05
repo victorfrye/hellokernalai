@@ -1,0 +1,47 @@
+Hi I'm Matt Eland. I teach software engineering professionally and am an Azure Data Scientist associate.
+
+We all know that Python can do a lot with machine learning, but did you know you can write Python code to take advantage of Microsoft Azure's cloud-based compute, storage, and automation capabilities?
+
+In this short talk I'm going to show you how the Azure ML Python SDK lets you register datasets, train models using automated machine learning, evaluate the performance of those models, register them for future use, and even deploy them as REST endpoints for others to use - all in around 100 lines of code.
+
+Automated machine learning refers to the task of selecting a data sets and high level goal such as predicting car prices or determining if a mole is likely to be cancerous or not. Automated ML then automates the selection of a specific machine learning algorithm and hyperparameters for that algorithm by trying as many different algorithms that might work as it can in a window of time and narrowing in on the best performing ones.
+
+This helps new data scientists significantly reduce the learning curve by allowing them to focus on the core task they want to perform instead of memorizing the available algorithms and their hyperparameters. It can also help more experienced data scientists find better performing algorithms they may not have considered.
+
+Automated ML is available on the web in Azure Machine Learning Studio, but it's faster and easier to share with others by running your experiments directly from Python code using the Azure ML Python SDK.
+
+Let's take a look at how a typical experiment works.
+
+The first thing we need to do is connect to an Azure Machine Learning Workspace. We do this by downloading a config.json file to our local directory and then calling Workspace.from_config() to connect to that workspace:
+
+Next, we need to either get a pre-provisioned compute cluster we've set up or create a new one:
+
+This allows us to use an Azure-based compute cluster for our machine learning tasks and only pay for the time we use.
+
+Next, we'll take a CSV file, load it into a Pandas dataframe, and register it as a tabular dataset in Azure.
+
+This registers the dataset in Azure, or adds a new version to an existing dataset. Many experiments can be done in the future with this same dataset.
+
+After this comes the fun part. We need to configure how our machine learning experiment should behave:
+
+We select the task we're trying to accomplish (regression or classification, typically), give Azure a dataset and tell it which column we want to predict and which machine learning metric is the most important to us when comparing two models.
+
+We can then configure information on cross validation, how many models to try, the compute resource to use, and how many different nodes in the cluster should be activated.
+
+Once we have this configured, we create and submit our experiment:
+
+This causes Azure to run our experiment and compare the various models it generates until it finds the best performing model based on the validation criteria we specified.
+
+The Azure ML Python SDK also includes some widgets that will actually show you the progress of a running machine learning experiment so you can monitor it directly in a Jupyter Notebook in your IDE.
+
+Once a run completes, we can grab the best performing model and details on that run and get access to all of the metrics associated with it.
+
+From there, we can register this model in Azure so it can be formally deployed in an Azure Container Instance or on Azure Kubernetes Service.
+
+Alternatively, we can also download the files associated with the model to use outside of Azure.
+
+If we like a model, we can deploy it directly from code as either an Azure Container Instance or an Azure Kubernetes Service with several different authentication and scaling options available.
+
+If you'd like to learn more about Azure Machine Learning, check out my data science blog at AccessibleAI.dev and my YouTube channel at MattOnDataScience.com.
+
+Thank for watching and happy Machine Learning!
