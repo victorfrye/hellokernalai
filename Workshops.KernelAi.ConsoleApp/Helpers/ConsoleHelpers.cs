@@ -101,4 +101,34 @@ public static class ConsoleHelpers
 
         console.Write(table);
     }
+
+    public static T GetChoice<T>(this IAnsiConsole console, string title, IEnumerable<T> choices, Func<T, string>? converter = null) where T : notnull
+    {
+        // M1 Macs in VS Code do not typically report supporting interactive mode with Spectre.Console so this helps avoid issues in workshops
+        while (!console.Profile.Capabilities.Interactive)
+        {
+            console.MarkupLine("[yellow]Interactive mode is not supported. Using fallback selection code.[/]");
+            for (int i = 1; i <= choices.Count(); i++)
+            {
+                T choice = choices.ElementAt(i - 1);
+                console.MarkupLine($"[yellow]{i}[/] {converter?.Invoke(choice) ?? choice.ToString()}");
+            }
+
+            console.WriteLine();
+            console.Write("Select a choice by number: ");
+            string input = Console.ReadLine() ?? string.Empty;
+            
+            if (int.TryParse(input, out int index) && index > 0 && index <= choices.Count())
+            {
+                return choices.ElementAt(index - 1);
+            }
+
+            console.MarkupLine("[red]Invalid selection.[/]");
+        }
+        
+        return console.Prompt(new SelectionPrompt<T>()
+            .Title(title)
+            .AddChoices(choices)
+            .UseConverter(c => (converter is null ? c.ToString() : converter(c))!));
+    }
 }

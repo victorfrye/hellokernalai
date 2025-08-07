@@ -61,17 +61,12 @@ public class KernelMemoryIndexes(IAnsiConsole console, WorkshopSettings settings
 
         IEnumerable<IndexDetails> indexes = await kernelMemory.ListIndexesAsync();
         console.MarkupLine("Select an index to filter by:");
-        IndexDetails index = console.Prompt(
-            new SelectionPrompt<IndexDetails>()
-                .Title("Index?")
-                .AddChoices(indexes)
-                .UseConverter(i => i.Name));
+        IndexDetails index = console.GetChoice("Select Index",
+            indexes,
+            i => i.Name);
 
-        console.MarkupLine("Select an access level to filter by:");
-        string accessLevel = console.Prompt(
-            new SelectionPrompt<string>()
-                .Title("Access Level?")
-                .AddChoices(["Public", "Leadership", "Engineering", "HR", "Espionage"]));
+        string accessLevel = console.GetChoice("Select Access Level to filter by",
+            ["Public", "Leadership", "Engineering", "HR", "Espionage"]);
 
         string indexName = index.Name;
         console.MarkupLine($"Searching for 'EvilCorp' in index {indexName} with tag filter Access={accessLevel}...");

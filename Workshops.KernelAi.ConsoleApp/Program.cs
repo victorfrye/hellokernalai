@@ -24,16 +24,13 @@ try
 
     do
     {     // Select a module to run
-        WorkshopModule module = console.Prompt(new SelectionPrompt<WorkshopModule>()
-            .Title("Select a module to run")
-            .AddChoices(Enum.GetValues<WorkshopModule>())
-            .UseConverter(m => m.ToString()));
+        WorkshopModule module = console.GetChoice("Select a module to run",
+            Enum.GetValues<WorkshopModule>());
 
         // Select an example in that module to run
-        IExample selectedExample = console.Prompt(new SelectionPrompt<IExample>()
-            .Title("Select an example to run")
-            .AddChoices(sp.GetServices<IExample>().Where(e => e.Module == module))
-            .UseConverter(e => e.Name));
+        IExample selectedExample = console.GetChoice("Select an example to run",
+            sp.GetServices<IExample>().Where(e => e.Module == module),
+            e => e.Name);
 
         console.MarkupLine($"Starting [yellow]{selectedExample.Name}[/]");
         await selectedExample.RunAsync();
