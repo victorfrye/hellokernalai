@@ -6,7 +6,6 @@ public class ObjectPlugin(IAnsiConsole console, WorkshopSettings settings) : IEx
 
     public WorkshopModule Module => WorkshopModule.SemanticKernel;
 
-
     public record InventoryItem(string Name, int Durability);
 
     public class InventoryPlugin
