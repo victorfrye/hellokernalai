@@ -1,15 +1,17 @@
 ﻿namespace Workshops.KernelAi.ConsoleApp.Modules.SemanticKernel;
-
 public class Plugins(IAnsiConsole console, WorkshopSettings settings) : IExample
 {
     public string Name => "Dragon Encounter (Dice Rolling Plugin)";
 
     public WorkshopModule Module => WorkshopModule.SemanticKernel;
 
+    
+    [Description("This plugin allows the AI to roll dice and narrate outcomes based on the results, enhancing the gaming experience with random elements.")]
     public class DicePlugin
     {
         [KernelFunction]
         [Description("Roll a 20-sided die and return the result. Perfect for determining outcomes in dramatic situations.")]
+        [return:Description("The result of the dice roll, formatted as a string.")]
         public string RollD20()
         {
             return RollDice(20);
@@ -17,6 +19,7 @@ public class Plugins(IAnsiConsole console, WorkshopSettings settings) : IExample
 
         [KernelFunction]
         [Description("Roll a 6-sided die and return the result. Great for simple random events and decisions.")]
+        [return:Description("The result of the dice roll, formatted as a string.")]
         public string RollD6()
         {
             return RollDice(6);
@@ -24,7 +27,8 @@ public class Plugins(IAnsiConsole console, WorkshopSettings settings) : IExample
 
         [KernelFunction]
         [Description("Roll a die with the specified number of sides and return the result. Use this for any random number generation between 1 and the sides value.")]
-        public string RollDice(int sides = 6)
+        [return:Description("The result of the dice roll, formatted as a string.")]
+        public string RollDice([Description("The number of sides the dice should have")] int sides = 6)
         {
             Random random = Random.Shared;
             int result = random.Next(1, sides + 1);
@@ -42,7 +46,7 @@ public class Plugins(IAnsiConsole console, WorkshopSettings settings) : IExample
             .Build();
 
         kernel.AutoFunctionInvocationFilters.Add(new ConsoleLoggingFunctionFilter(console));
-        kernel.Plugins.AddFromType<DicePlugin>();
+        kernel.Plugins.AddFromType<DicePlugin>(pluginName: "DiceRolling");
 
         ChatHistory history = [];
         history.AddSystemMessage("""

@@ -2,7 +2,7 @@
 
 public class PromptFunctions(IAnsiConsole console, WorkshopSettings settings) : IExample
 {
-    public string Name => "Kernel with Nested Experts";
+    public string Name => "Kernel with Expert Functions";
 
     public WorkshopModule Module => WorkshopModule.SemanticKernel;
 
