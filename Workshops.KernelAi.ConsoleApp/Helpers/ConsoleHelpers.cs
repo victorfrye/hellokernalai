@@ -107,7 +107,6 @@ public static class ConsoleHelpers
         // M1 Macs in VS Code do not typically report supporting interactive mode with Spectre.Console so this helps avoid issues in workshops
         while (!console.Profile.Capabilities.Interactive)
         {
-            console.MarkupLine("[yellow]Interactive mode is not supported. Using fallback selection code.[/]");
             for (int i = 1; i <= choices.Count(); i++)
             {
                 T choice = choices.ElementAt(i - 1);
@@ -130,5 +129,31 @@ public static class ConsoleHelpers
             .Title(title)
             .AddChoices(choices)
             .UseConverter(c => (converter is null ? c.ToString() : converter(c))!));
+    }
+    
+    public static bool SafeConfirm(this IAnsiConsole console, string message)
+    {
+        // M1 Macs in VS Code do not typically report supporting interactive mode with Spectre.Console so this helps avoid issues in workshops
+        if (!console.Profile.Capabilities.Interactive)
+        {
+            while (true)
+            {
+                console.Write($"{message} (y/n): ");
+                ConsoleKeyInfo input = Console.ReadKey();
+                
+                console.WriteLine();
+                if (input.Key == ConsoleKey.Y)
+                {
+                    return true;
+                }
+                if (input.Key == ConsoleKey.N)
+                {
+                    return false;
+                }
+                console.MarkupLine("[red]Invalid input. Please enter 'y' or 'n'.[/]");
+            }
+        }
+
+        return console.Confirm(message, defaultValue: true);
     }
 }

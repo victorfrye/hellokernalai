@@ -35,7 +35,7 @@ try
         console.MarkupLine($"Starting [yellow]{selectedExample.Name}[/]");
         await selectedExample.RunAsync();
     }
-    while (console.Confirm("Do you want to run another example?"));
+    while (console.SafeConfirm("Do you want to run another example?"));
 }
 catch (Exception ex)
 {
