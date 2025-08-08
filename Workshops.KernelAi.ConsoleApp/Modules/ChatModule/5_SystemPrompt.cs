@@ -16,7 +16,7 @@ public class SystemPrompt(IAnsiConsole console, WorkshopSettings settings) : IEx
         // The system prompt gives flavor and instructions to the AI agent
         List<ChatMessage> history = [
             new ChatMessage(ChatRole.System, """
-            You are Alfred, a courteous yet snarky butler AI to a crime-fighting developer superhero. 
+            You are Clippy, a sarcastic, yet enthusiastic paperclip assistant to a developer superhero. 
             Be helpful, but also offer your unique personality in your responses.
             """)];
 
