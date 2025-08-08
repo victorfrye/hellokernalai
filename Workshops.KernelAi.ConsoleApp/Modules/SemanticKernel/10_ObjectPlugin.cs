@@ -6,7 +6,6 @@ public class ObjectPlugin(IAnsiConsole console, WorkshopSettings settings) : IEx
 
     public WorkshopModule Module => WorkshopModule.SemanticKernel;
 
-
     public record InventoryItem(string Name, int Durability);
 
     public class InventoryPlugin
@@ -19,12 +18,14 @@ public class ObjectPlugin(IAnsiConsole console, WorkshopSettings settings) : IEx
         ];
 
         [KernelFunction]
+        [Description("Get a complete list of all items currently in the player's inventory, including their durability levels.")]
         public List<InventoryItem> GetInventory()
         {
             return _items;
         }
 
         [KernelFunction]
+        [Description("Add a new item to the player's inventory. Use this when the player picks up, finds, or receives new items.")]
         public string AddItem(InventoryItem item)
         {
             _items.Add(item);
@@ -32,6 +33,7 @@ public class ObjectPlugin(IAnsiConsole console, WorkshopSettings settings) : IEx
         }
 
         [KernelFunction]
+        [Description("Remove an item from the player's inventory. Use this when items are used up, broken, dropped, or given away.")]
         public string RemoveItem(InventoryItem item)
         {
             _items = _items.Where(i => !string.Equals(i.Name, item.Name, StringComparison.OrdinalIgnoreCase))

@@ -20,6 +20,7 @@ public class KernelMemorySemanticKernelIntegration(IAnsiConsole console, Worksho
         }
 
         [KernelFunction]
+        [Description("Search the knowledge base for relevant information based on a query. Returns the most relevant facts and documents found.")]
         public async Task<string> Search(string query)
         {
             SearchResult results = await _memory.SearchAsync(query, limit: 3);

@@ -10,6 +10,9 @@
 
   <ItemGroup>
     <None Remove="appsettings.json" />
+    <None Remove="Content\Templates\DocumentationTemplate.txt" />
+    <None Remove="Content\Templates\EmailTemplate.txt" />
+    <None Remove="Content\Templates\MarketingTemplate.txt" />
     <None Remove="Modules\KernelMemory\SampleDocuments\Ch15RiskRegister.xlsx" />
     <None Remove="Modules\KernelMemory\SampleDocuments\KernelMemoryArticle.md" />
     <None Remove="Modules\KernelMemory\SampleDocuments\MockingMirror.pptx" />
